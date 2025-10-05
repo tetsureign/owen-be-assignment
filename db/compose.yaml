@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    container_name: owen-be-assignnment
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: product-mgnt
+      POSTGRES_USER: test-user
+      POSTGRES_PASSWORD: cyberpsychosis
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_assignment_data:/var/lib/postgres/data
+
+volumes:
+  pg_assignment_data:
