@@ -21,13 +21,6 @@ import {
 import * as fs from 'fs';
 import { UploadAttachmentDto } from './dto/upload-attachment.dto';
 
-type AttachmentMetadata = {
-  fileName: string;
-  filePath: string;
-  extension: string;
-  size: number;
-};
-
 @ApiTags('Attachments')
 @Controller('products/:productId/attachments')
 export class AttachmentsController {
@@ -84,7 +77,7 @@ export class AttachmentsController {
       file.path,
     );
 
-    const meta: AttachmentMetadata = {
+    const meta = {
       fileName: file.originalname,
       filePath: relativePath,
       extension: ext,
