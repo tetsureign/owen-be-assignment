@@ -18,8 +18,31 @@ export class ProductsService {
     return this.productRepository.save(entity);
   }
 
-  findAll(): Promise<Product[]> {
-    return this.productRepository.find();
+  async findAll(
+    page = 1,
+    limit = 10,
+    sort: keyof Product = 'createdAt',
+    order: 'ASC' | 'DESC' = 'DESC',
+  ): Promise<{
+    data: Product[];
+    total: number;
+    page: number;
+    limit: number;
+    pages: number;
+  }> {
+    const [data, total] = await this.productRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+      order: { [sort]: order },
+    });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      pages: Math.ceil(total / limit),
+    };
   }
 
   async findOne(id: string): Promise<Product> {
