@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { HashMap } from './hashmap';
-import { AttachmentNode } from './attachment-node';
+import { AttachmentNode } from './attachment-tree';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Attachment } from 'src/attachments/entities/attachments.entity';
 import { Repository } from 'typeorm';
