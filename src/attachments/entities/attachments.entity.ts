@@ -35,5 +35,5 @@ export class Attachment {
   product: Product;
 
   @Column()
-  productId: number;
+  productId: string;
 }

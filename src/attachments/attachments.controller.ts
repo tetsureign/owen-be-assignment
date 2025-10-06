@@ -11,6 +11,13 @@ import { diskStorage } from 'multer';
 import * as path from 'path';
 import { AttachmentsService } from './attachments.service';
 import { Attachment } from './entities/attachments.entity';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 type AttachmentMetadata = {
   fileName: string;
@@ -19,11 +26,24 @@ type AttachmentMetadata = {
   size: number;
 };
 
+@ApiTags('Attachments')
 @Controller('products/:productId/attachments')
 export class AttachmentsController {
   constructor(private readonly service: AttachmentsService) {}
 
   @Post('upload')
+  @ApiParam({ name: 'productId', description: 'UUID of the product' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: { file: { type: 'string', format: 'binary' } },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Upload attachment for the product.',
+  })
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -39,7 +59,7 @@ export class AttachmentsController {
     }),
   )
   async upload(
-    @Param('productId') productId: number,
+    @Param('productId') productId: string,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<Attachment> {
     const ext = path.extname(file.originalname).replace('.', '');
@@ -50,11 +70,15 @@ export class AttachmentsController {
       size: file.size,
     };
 
-    return this.service.registerAttachment(Number(productId), meta);
+    return this.service.registerAttachment(productId, meta);
   }
 
   @Get('tree')
-  async getTree(@Param('productId') productId: number) {
-    return this.service.getTree(Number(productId));
+  @ApiResponse({
+    status: 200,
+    description: 'Returns folder/file hierarchy as JSON.',
+  })
+  getTree(@Param('productId') productId: string) {
+    return this.service.getTree(productId);
   }
 }
