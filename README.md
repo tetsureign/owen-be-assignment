@@ -141,5 +141,3 @@ All required features are implemented
 | File Deletion          | Current version doesn’t delete physical files when removing a product or attachment.                                                                                |
 | Advanced MIME Handling | Currently only uses file extension; no content-type detection implemented.                                                                                          |
 | Authentication         | Not required for assessment.                                                                                                                                        |
-
----
