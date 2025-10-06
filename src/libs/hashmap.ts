@@ -7,13 +7,15 @@ export class HashMap<K, V> {
     this.buckets = new Array(capacity).fill(null).map(() => []);
   }
 
+  // FNV-1a hash function
   private hash(key: K): number {
     const str = String(key);
-    let hash = 0;
+    let hash = 2166136261;
     for (let i = 0; i < str.length; i++) {
-      hash = (hash * 31 + str.charCodeAt(i)) % this.capacity;
+      hash ^= str.charCodeAt(i);
+      hash = (hash * 16777619) >>> 0;
     }
-    return hash;
+    return hash % this.capacity;
   }
 
   set(key: K, value: V): void {
