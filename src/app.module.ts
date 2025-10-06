@@ -17,7 +17,7 @@ import { AttachmentsModule } from './attachments/attachments.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME ?? 'product-mgnt',
       autoLoadEntities: true,
-      synchronize: true, // TODO: dev only
+      synchronize: process.env.NODE_ENV === 'development' ? true : false,
     }),
     ProductsModule,
     AttachmentsModule,
