@@ -9,6 +9,6 @@ import { AttachmentIndexService } from 'src/libs/attachment-index.service';
   imports: [TypeOrmModule.forFeature([Attachment])],
   controllers: [AttachmentsController],
   providers: [AttachmentsService, AttachmentIndexService],
-  exports: [AttachmentsService, AttachmentIndexService],
+  exports: [AttachmentIndexService],
 })
 export class AttachmentsModule {}

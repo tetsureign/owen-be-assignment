@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Attachment } from './entities/attachments.entity';
 import { AttachmentIndexService } from 'src/libs/attachment-index.service';
+import * as path from 'path';
 
 @Injectable()
 export class AttachmentsService {
@@ -15,7 +16,12 @@ export class AttachmentsService {
   async registerAttachment(productId: string, meta: Partial<Attachment>) {
     const saved = await this.attachmentRepo.save({ ...meta, productId });
 
-    this.index.updateTree(productId, meta.filePath!);
+    const filePath = typeof meta.filePath === 'string' ? meta.filePath : '';
+    const normalized = filePath.split(path.sep).join('/'); // normalize for Win/Linux
+    const parts = normalized.split('/'); // e.g. ['images','screenshots','ui.png']
+
+    this.index.ensureProductRoot(productId);
+    this.index.updateTree(productId, parts.join('/'));
 
     return saved;
   }

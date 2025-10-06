@@ -48,4 +48,10 @@ export class AttachmentIndexService implements OnModuleInit {
       this.index.set(pid, root);
     }
   }
+
+  ensureProductRoot(productId: string): void {
+    if (!this.index.get(productId)) {
+      this.index.set(productId, new AttachmentNode('root', 'folder'));
+    }
+  }
 }
