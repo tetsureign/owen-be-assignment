@@ -40,7 +40,7 @@ cd db
 docker compose up -d
 ```
 
-This spins up a PostgreSQL container with name `owen-be-assignnment`  
+This spins up a PostgreSQL container with name `oven-be-assignnment`  
 and default credentials defined in `.env.example`.
 
 ### Configure environment
